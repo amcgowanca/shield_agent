@@ -1,0 +1,8 @@
+mask_403: true
+domain_types:
+  - default
+  - edit
+auth_enabled:
+  theme_dbupdate: 'seven'
+auth_disabled:
+  theme_dbupdate: 'bartik'

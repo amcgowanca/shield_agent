@@ -1,0 +1,7 @@
+type: 'default'
+is:
+  production: false
+  staging: false
+  dev: false
+  ci: false
+  local: false

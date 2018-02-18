@@ -1,0 +1,55 @@
+is: null
+always_on: false
+allow_cli: true
+auth:
+  message: 'Authentication is required. Username: [user] / Password: [pass]'
+  username: admin
+  password: password
+environments:
+  production:
+    default:
+      auth: false
+      routes:
+        - default
+    edit:
+      auth: true
+      routes: null
+      allow_routes_admin_context: true
+  staging:
+    default:
+      auth: true
+      routes:
+        - default
+  dev:
+    default:
+      auth: true
+      routes:
+        - default
+  local:
+    default:
+      auth: false
+      routes:
+        - default
+      allow_routes_admin_context: false
+    edit:
+      auth: true
+      routes: null
+      allow_routes_admin_context: true
+routes:
+  default:
+    - entity.file.canonical
+    - entity.media.canonical
+    - entity.taxonomy_term.canonical
+    - entity.user.canonical
+    - filter.tips_all
+    - filter.tips
+    - system.db_update
+    - user.register
+    - user.login
+    - user.logout
+    - user.pass
+    - user.page
+    - user.reset.login
+    - user.reset
+    - user.reset.form
+  edit: { }
