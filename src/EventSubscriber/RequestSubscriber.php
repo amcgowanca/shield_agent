@@ -14,23 +14,29 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- *
+ * Acts on all incoming master requests, determining if they are protected.
  */
 class RequestSubscriber implements EventSubscriberInterface {
 
   use UrlGeneratorTrait;
 
   /**
+   * The current route match.
+   *
    * @var \Drupal\Core\Routing\CurrentRouteMatch
    */
   protected $routeMatch;
 
   /**
+   * The config factory.
+   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $config;
 
   /**
+   * The admin route context.
+   *
    * @var \Drupal\Core\Routing\AdminContext
    */
   protected $adminContext;
@@ -42,6 +48,20 @@ class RequestSubscriber implements EventSubscriberInterface {
    */
   protected $account;
 
+  /**
+   * Creates a new RequestSubscriber instance.
+   *
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $route_match
+   *   The current route match.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory service.
+   * @param \Drupal\Core\Routing\AdminContext $admin_context
+   *   The admin route context service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $account
+   *   The current user.
+   * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
+   *   The URL Generator service.
+   */
   public function __construct(CurrentRouteMatch $route_match, ConfigFactoryInterface $config_factory, AdminContext $admin_context, AccountProxyInterface $account, UrlGeneratorInterface $url_generator) {
     $this->routeMatch = $route_match;
     $this->config = $config_factory;
@@ -107,9 +127,7 @@ class RequestSubscriber implements EventSubscriberInterface {
           }
         }
       }
-
     }
-
   }
 
   /**

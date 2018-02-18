@@ -19,9 +19,10 @@ class PublicDbUpdateNegotiator implements ThemeNegotiatorInterface {
   protected $config;
 
   /**
-   * PublicDbUpdateNegotiator constructor.
+   * Creates a new instance of PublicDbUpdateNegotiator.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
+   *   The config factory service.
    */
   public function __construct(ConfigFactoryInterface $config) {
     $this->config = $config;

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * example.settings.php
+ * @file
+ * Provides an example of settings.php inclusion for Shield agent's config.
  *
- * Provides an example of settings.php inclusion for Shield agent's config. The
- * examples listed below are commonly used in conjunction with Acquia BLT.
+ * The examples listed below are commonly used in conjunction with Acquia BLT.
  */
 
 /**
