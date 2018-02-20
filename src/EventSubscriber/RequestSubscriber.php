@@ -100,6 +100,7 @@ class RequestSubscriber implements EventSubscriberInterface {
       $protected_environment = $protected_environments[$_protecting_env][$_protecting_type];
       $protected_environment += [
         'routes' => [],
+        'routes_except' => [],
         'allow_routes_admin_context' => FALSE,
       ];
 
@@ -113,12 +114,25 @@ class RequestSubscriber implements EventSubscriberInterface {
         throw new AccessDeniedHttpException();
       }
 
+      $shielded_routes_collections = $this->config->get('shield_agent.protector')
+        ->get('routes');
+
+      if (!empty($protected_environment['routes_except'])) {
+        foreach ($protected_environment['routes_except'] as $collection_name) {
+          if (in_array($route_name, $shielded_routes_collections[$collection_name])) {
+            return;
+          }
+        }
+
+        $event->stopPropagation();
+        throw new AccessDeniedHttpException();
+      }
+
+
       if (empty($protected_environment['routes'])) {
         return;
       }
 
-      $shielded_routes_collections = $this->config->get('shield_agent.protector')
-        ->get('routes');
       foreach ($protected_environment['routes'] as $collection_name) {
         if (!empty($shielded_routes_collections[$collection_name])) {
           if (in_array($route_name, $shielded_routes_collections[$collection_name])) {
