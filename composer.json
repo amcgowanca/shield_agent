@@ -1,0 +1,10 @@
+{
+  "name": "amcgowanca/shield_agent",
+  "description": "Provides enhanced HTTP Basic Auth shielding capabilities.",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "required-dev": {},
+  "require": {}
+}
