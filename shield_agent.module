@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Provides the ability for securing a Drupal 8 application and locking down various routes.
+ */
+
+/**
+ * Implements hook_preprocess().
+ */
+function shield_agent_preprocess(&$variables, $hook) {
+  if (isset($variables['element']['#cache'])) {
+    _shield_agent_attach_environment_cache_context($variables['element']);
+  }
+  elseif (isset($variables['#cache'])) {
+    _shield_agent_attach_environment_cache_context($variables);
+  }
+}
+
+/**
+ * Attaches the Shield Agent Environment cache context.
+ *
+ * @param array $element
+ *   The element to modify and attach the Shield Agent Environment context to.
+ */
+function _shield_agent_attach_environment_cache_context(array &$element) {
+  if (!isset($element['#cache'])) {
+    $element['#cache'] = [];
+  }
+
+  $element['#cache'] += ['contexts' => []];
+  $element['#cache']['contexts'][] = 'shield_agent_environment';
+}

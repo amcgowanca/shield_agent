@@ -19,3 +19,8 @@ services:
     arguments: ['@config.factory']
     tags:
       - { name: theme_negotiator, priority: 125 }
+  cache_context.shield_agent_environment:
+    class: Drupal\shield_agent\Cache\Context\Environment
+    arguments: ['@config.factory']
+    tags:
+      - { name: cache.context }
