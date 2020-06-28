@@ -5,8 +5,6 @@ namespace Drupal\shield_agent\EventSubscriber;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\Core\Routing\UrlGeneratorInterface;
-use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -17,8 +15,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * Acts on all incoming master requests, determining if they are protected.
  */
 class RequestSubscriber implements EventSubscriberInterface {
-
-  use UrlGeneratorTrait;
 
   /**
    * The current route match.
@@ -59,15 +55,12 @@ class RequestSubscriber implements EventSubscriberInterface {
    *   The admin route context service.
    * @param \Drupal\Core\Session\AccountProxyInterface $account
    *   The current user.
-   * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
-   *   The URL Generator service.
    */
-  public function __construct(CurrentRouteMatch $route_match, ConfigFactoryInterface $config_factory, AdminContext $admin_context, AccountProxyInterface $account, UrlGeneratorInterface $url_generator) {
+  public function __construct(CurrentRouteMatch $route_match, ConfigFactoryInterface $config_factory, AdminContext $admin_context, AccountProxyInterface $account) {
     $this->routeMatch = $route_match;
     $this->config = $config_factory;
     $this->adminContext = $admin_context;
     $this->account = $account;
-    $this->setUrlGenerator($url_generator);
   }
 
   /**

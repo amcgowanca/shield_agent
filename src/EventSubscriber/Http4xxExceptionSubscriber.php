@@ -3,10 +3,10 @@
 namespace Drupal\shield_agent\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Routing\UrlGeneratorInterface;
-use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Url;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,8 +17,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class Http4xxExceptionSubscriber implements EventSubscriberInterface {
 
-  use UrlGeneratorTrait;
-
   /**
    * Creates a new Http4xxExceptionSubscriber instance.
    *
@@ -26,13 +24,10 @@ class Http4xxExceptionSubscriber implements EventSubscriberInterface {
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxyInterface $account
    *   The current user.
-   * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
-   *   The URL Generator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AccountProxyInterface $account, UrlGeneratorInterface $url_generator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AccountProxyInterface $account) {
     $this->config = $config_factory;
     $this->account = $account;
-    $this->setUrlGenerator($url_generator);
   }
 
   /**
@@ -48,7 +43,10 @@ class Http4xxExceptionSubscriber implements EventSubscriberInterface {
     $exception = $event->getException();
     if ($mask_403_as_404 && $exception instanceof AccessDeniedHttpException) {
       if ($this->account->isAuthenticated()) {
-        $redirect = $this->redirect('entity.user.canonical', ['user' => $this->account->id()]);
+        $redirect_url = Url::fromRoute('entity.user.canonical', [
+          'user' => $this->account->id(),
+        ]);
+        $redirect = RedirectResponse::create($redirect_url, 301);
         $event->setResponse($redirect);
         return;
       }
