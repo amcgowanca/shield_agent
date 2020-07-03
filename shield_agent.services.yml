@@ -6,7 +6,7 @@ services:
       - { name: event_subscriber }
   shield_agent.http_4xx_conversion:
     class: Drupal\shield_agent\EventSubscriber\Http4xxExceptionSubscriber
-    arguments: ['@config.factory', '@current_user']
+    arguments: ['@current_route_match', '@config.factory', '@current_user']
     tags:
       - { name: event_subscriber }
   shield_agent.http_basicauth_middlware:

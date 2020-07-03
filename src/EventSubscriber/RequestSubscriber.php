@@ -6,9 +6,9 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\shield_agent\AccessDeniedHttpException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -83,7 +83,7 @@ class RequestSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    list($_protecting_env, $_protecting_type) = explode('.', $protecting, 2);
+    [$_protecting_env, $_protecting_type] = explode('.', $protecting, 2);
 
     $protected_environments = $this->config->get('shield_agent.protector')
       ->get('environments');
