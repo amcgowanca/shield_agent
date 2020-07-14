@@ -2,7 +2,6 @@
 
 namespace Drupal\shield_agent;
 
-use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,7 +112,7 @@ class HttpBasicAuthMiddleware implements HttpKernelInterface {
         list($input_username, $input_password) = explode(':', base64_decode(substr($request->server->get('REDIRECT_HTTP_AUTHORIZATION'), 6)), 2);
       }
 
-      if (isset($input_username) && isset($input_password) && $input_username === $username && Crypt::hashEquals($password, $input_password)) {
+      if (isset($input_username) && isset($input_password) && $input_username === $username && hash_equals($password, $input_password)) {
         return $this->httpKernel->handle($request, $type, $catch);
       }
     }
